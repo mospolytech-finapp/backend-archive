@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Аутентификация</title>
+    <style>
+      div {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      label {
+        display: inline-block;
+        width: 120px;
+        text-align: right;
+        margin-right: 20px;
+      }
+      input[type="email"], input[type="password"] {
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Вход</h1>
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div>
+        <input type="submit" value="Войти">
+      </div>
+    </form>
+  </body>
+</html>

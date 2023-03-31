@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <style>
+        label, input, select {
+            display: block;
+            margin-bottom: 10px;
+            margin-left: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Регистрация</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <div {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <div>
+            <label for="last_name">Фамилия:</label>
+            <input type="text" id="last_name" name="last_name">
+        </div>
+        <div>
+            <label for="first_name">Имя:</label>
+            <input type="text" id="first_name" name="first_name">
+        </div>
+        <div>
+            <label for="middle_name">Отчество:</label>
+            <input type="text" id="middle_name" name="middle_name">
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+        </div>
+        <div>
+            <label for="date_of_birth">Дата рождения:</label>
+            <input type="date" id="date_of_birth" name="date_of_birth">
+        </div>
+        <div>
+            <label for="gender">Пол:</label>
+            <select id="gender" name="gender">
+                <option value="M">Мужской</option>
+                <option value="F">Женский</option>
+                <option value="O">Другой</option>
+            </select>
+        </div>
+        <div>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div>
+            <label for="confirm_password">Подтверждение пароля:</label>
+            <input type="password" id="confirm_password" name="confirm_password">
+        </div>
+        <div>
+            <button type="submit">Зарегистрироваться</button>
+        </div>
+    </form>
+</body>
+</html>
