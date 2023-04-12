@@ -11,7 +11,7 @@ class FinappUserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'email',
-            'password'
+            'password',
             'last_name',
             'first_name',
             'middle_name',

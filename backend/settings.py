@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'authentication',
 ]
 
@@ -117,3 +118,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # User model
 AUTH_USER_MODEL = 'authentication.Finapp_User'
+
+# REST framework settings
+REST_FRAMEWORK = {
+    'DEFUALT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFUALT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
