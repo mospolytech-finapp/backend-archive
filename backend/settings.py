@@ -121,10 +121,10 @@ AUTH_USER_MODEL = 'authentication.Finapp_User'
 
 # REST framework settings
 REST_FRAMEWORK = {
-    'DEFUALT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    'DEFUALT_PERMISSION_CLASSES': [
+    'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
