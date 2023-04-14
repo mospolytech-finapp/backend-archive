@@ -6,7 +6,7 @@ from .serializers import FinappUserSerializer
 
 
 class RegistrationView(generics.CreateAPIView):
-    premission_classes = [AllowAny]
+    permission_classes = [AllowAny]
     serializer_class = FinappUserSerializer
 
     def post(self, request, *args, **kwargs):

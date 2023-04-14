@@ -1,19 +1,14 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Transactions
-from .serializers import TransactionSerializer
+from .serializers import TransactionSerializer, TransactionUpdateDeleteSerializer
 
 
-class TransactionsManagerView(generics.ListCreateAPIView):
-    """
-    GET - возвращает транзакции, отфильтрованные по параметрам запроса
-    POST - создаёт новую транзакцию
-    PUT
-    DELETE
-    """
-    serializer_class = TransactionSerializer
+class TransactionsList(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = TransactionSerializer
 
     def get_queryset(self):
         queryset = Transactions.objects.filter(user_id=self.request.user.id)
@@ -43,6 +38,11 @@ class TransactionsManagerView(generics.ListCreateAPIView):
 
         return queryset
 
+
+class TransactionsCreate(generics.CreateAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -60,3 +60,77 @@ class TransactionsManagerView(generics.ListCreateAPIView):
             )
 
 
+class TransactionsUpdate(generics.UpdateAPIView):
+    serializer_class = TransactionUpdateDeleteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        id = request.data.get('id')
+        serializer = TransactionUpdateDeleteSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        transaction = Transactions.objects.filter(id=id, user_id=request.user.id)
+        if not transaction:
+            return Response(
+                {'error': 'Транзакция не найдена.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        try:
+            serializer.update(transaction, serializer.data)
+            return Response(
+                {'Transaction': serializer.data},
+                status=status.HTTP_200_OK
+            )
+
+        except Exception as e:
+            return Response(
+                {'error': f'Что-то пошло не так: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class TransactionsDelete(generics.DestroyAPIView):
+    serializer_class = TransactionUpdateDeleteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        id = request.data.get('id')
+        serializer = TransactionUpdateDeleteSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        transaction = Transactions.objects.filter(id=id, user_id=request.user.id)
+
+        if not transaction:
+            return Response(
+                {'error': 'Транзакция не найдена.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        try:
+            serializer.delete(transaction)
+            return Response(
+                {'success': 'Транзакция успешно удалена.'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'Что-то пошло не так: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class BaseManageView(APIView):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not hasattr(self, 'VIEWS_BY_METHOD'):
+            raise Exception('VIEWS_BY_METHOD static dictionary variable must be defined on a ManageView class!')
+        if request.method in self.VIEWS_BY_METHOD:
+            return self.VIEWS_BY_METHOD[request.method]()(request, *args, **kwargs)
+
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class TransactionsManageView(BaseManageView):
+    VIEWS_BY_METHOD = {
+        'DELETE': TransactionsDelete.as_view,
+        'GET': TransactionsList.as_view,
+        'PUT': TransactionsUpdate.as_view,
+        'POST': TransactionsCreate.as_view
+    }

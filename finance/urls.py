@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import TransactionsManagerView
+from .views import *
 
 urlpatterns = [
-    path('transactions/', TransactionsManagerView.as_view(), name='transactions-manager'),
+    path('transactions/', TransactionsManageView.as_view(), name='transactions-manager'),
 ]
