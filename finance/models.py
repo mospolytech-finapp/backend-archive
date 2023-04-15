@@ -12,5 +12,6 @@ class Transactions(models.Model):
     # category = models.ForeignKey('finance.Category', blank=False, null=False, on_delete=models.DO_NOTHING)
     category = models.IntegerField(blank=False, null=False)
 
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
