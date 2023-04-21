@@ -1,0 +1,47 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-21 18:14+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+#: authentication/validator/password.py:9
+msgid "This password doesn't contain any lowercase characters."
+msgstr "В пароле отсутствуют символы нижнего регистра."
+
+#: authentication/validator/password.py:14
+msgid "Your password must contain lowercase characters."
+msgstr "Ваш пароль должен содержать символы нижнего регистра."
+
+#: authentication/validator/password.py:21
+msgid "This password doesn't contain any highercase characters."
+msgstr "В пароле отсутствуют символы верхнего регистра."
+
+#: authentication/validator/password.py:26
+msgid "Your password must contain highercase characters."
+msgstr "Ваш пароль должен содержать символы верхнего регистра."
+
+#: authentication/validator/password.py:33
+msgid "This password doesn't contain any numeric characters."
+msgstr "В пароле отсутствуют числовые символы."
+
+#: authentication/validator/password.py:38
+msgid "Your password must contain numeric symbols."
+msgstr "Ваш пароль должен содержать числовые символы."
+
+#: authentication/validator/password.py:48
+msgid "This password doesn't contain any special characters."
+msgstr "В пароле отсутствуют специальные символы."
+
+#: authentication/validator/password.py:53
+msgid "Your password must contain special symbols."
+msgstr "Ваш пароль должен содержать специальные символы."
+
