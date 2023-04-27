@@ -15,7 +15,6 @@ class TransactionSerializer(serializers.ModelSerializer):
             'description',
             'category',
         ]
-        read_only_fields = ('id', 'user_id')
 
     def create(self, validated_data, **kwargs):
         transaction = Transaction.objects.create(**validated_data, **kwargs)

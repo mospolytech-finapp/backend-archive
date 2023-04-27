@@ -9,7 +9,7 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
 
     def get_queryset(self):
-        return Transaction.objects.filter(user_id=self.request.user)
+        return Transaction.objects.filter(owner=self.request.user)
 
     def filter_queryset(self, queryset):
         filter_params = self.request.query_params.dict()
@@ -29,7 +29,7 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(user_id=request.user)
+        serializer.save(owner=request.user)
         return Response(
             serializer.data,
             status=status.HTTP_201_CREATED
