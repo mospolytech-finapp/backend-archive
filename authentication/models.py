@@ -5,15 +5,15 @@ from .managers import FinappUserManager
 
 class Finapp_User(AbstractBaseUser):
     last_name = models.CharField(
-            'Фамилия', max_length=30, null=False, blank=False)
+        'Фамилия', max_length=30, null=False, blank=False)
     first_name = models.CharField(
-            'Имя', max_length=30, null=False, blank=False)
+        'Имя', max_length=30, null=False, blank=False)
     middle_name = models.CharField(
-            'Отчество', max_length=30, null=True, blank=True)
+        'Отчество', max_length=30, null=True, blank=True)
     email = models.EmailField(
-            'Почта', unique=True, null=False, blank=False)
+        unique=True, null=False, blank=False)
     date_of_birth = models.DateField(
-            'Дата рождения', null=True, blank=True)
+        'Дата рождения', null=True, blank=True)
 
     USERNAME_FIELD = 'email'
 
