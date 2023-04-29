@@ -15,6 +15,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    "https://web-mospolytech-finapp.vercel.app",
+    "http://127.0.0.1:5173",
+]
+MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+]
 
 # Application definition
 
@@ -25,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "corsheaders",
     "drf_standardized_errors",
     'drf_spectacular',
     'rest_framework',
