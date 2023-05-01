@@ -27,7 +27,7 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
         return queryset
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data.copy())
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=request.user)
         return Response(
@@ -43,7 +43,7 @@ class CategoryManagerViewSet(viewsets.ModelViewSet):
         return Category.objects.filter(owner=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data.copy())
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=request.user)
         return Response(
