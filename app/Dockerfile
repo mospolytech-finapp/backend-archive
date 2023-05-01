@@ -14,5 +14,3 @@ COPY . .
 
 RUN ["python", "./manage.py", "migrate"]
 RUN ["python", "./manage.py", "compilemessages"]
-
-ENTRYPOINT [ "gunicorn", "-b", "0.0.0.0:8000", "backend.wsgi" ]

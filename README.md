@@ -5,6 +5,6 @@
 > Linux, Unix
 
 ```
-docker build app -t finapp-backend
-docker run --name finapp-backend-app --rm -p 8000:8000 finapp-backend
+docker-compose build
+docker-compose up -d
 ```
