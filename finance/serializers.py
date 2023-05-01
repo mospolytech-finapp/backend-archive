@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Transaction
+from .models import Transaction, Category
 
 
 class TransactionSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-            # 'user_id',
+            # 'owner',
             'amount',
             'date',
             'time',
@@ -16,6 +16,12 @@ class TransactionSerializer(serializers.ModelSerializer):
             'category',
         ]
 
-    def create(self, validated_data, **kwargs):
-        transaction = Transaction.objects.create(**validated_data, **kwargs)
-        return transaction
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = [
+            'id',
+            # 'owner',
+            'name',
+        ]
