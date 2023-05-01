@@ -5,6 +5,13 @@
 > Linux, Unix
 
 ```
-docker-compose build
-docker-compose up -d
+docker-compose up -d --build
+docker-compose exec web python manage.py compilemessages
+docker-compose exec web python manage.py migrate --noinput
+```
+
+## Просмотр бд
+
+```
+docker-compose exec db psql --username=fintool_dev --dbname=fintool
 ```

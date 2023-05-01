@@ -8,6 +8,7 @@ drf-standardized-errors==0.12.5
 gunicorn==20.1.0
 inflection==0.5.1
 jsonschema==4.17.3
+psycopg2-binary==2.9.6
 pyrsistent==0.19.3
 pytz==2023.3
 PyYAML==6.0
