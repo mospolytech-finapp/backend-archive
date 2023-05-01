@@ -2,8 +2,17 @@ from rest_framework import serializers
 from .models import Transaction, Category
 
 
+class FilteredCategoryPrimaryKeyRelatedField(serializers.PrimaryKeyRelatedField):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        request = self.context.get('request')
+        if request:
+            return queryset.filter(owner=request.user)
+        return queryset
+
+
 class TransactionSerializer(serializers.ModelSerializer):
-    category = serializers.PrimaryKeyRelatedField(
+    category = FilteredCategoryPrimaryKeyRelatedField(
         queryset=Category.objects.all(),
     )
 
@@ -19,14 +28,6 @@ class TransactionSerializer(serializers.ModelSerializer):
             'description',
             'category',
         ]
-
-    def get_fields(self):
-        fields = super().get_fields()
-
-        fields['category'].queryset = fields['category'].queryset.filter(
-            owner=self.context['request'].user)
-
-        return fields
 
 
 class CategorySerializer(serializers.ModelSerializer):
