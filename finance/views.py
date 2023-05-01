@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from .models import Transaction
-from .serializers import TransactionSerializer
+from .models import Transaction, Category
+from .serializers import TransactionSerializer, CategorySerializer
 
 
 class TransactionManagerViewSet(viewsets.ModelViewSet):
@@ -27,7 +27,23 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
         return queryset
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data.copy())
+        serializer.is_valid(raise_exception=True)
+        serializer.save(owner=request.user)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED
+        )
+
+
+class CategoryManagerViewSet(viewsets.ModelViewSet):
+    serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        return Category.objects.filter(owner=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data.copy())
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=request.user)
         return Response(
