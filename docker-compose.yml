@@ -3,7 +3,7 @@ version: '3.8'
 services:
   web:
     build: ./app
-    command: gunicorn -b 0.0.0.0:8000 backend.wsgi
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./app/:/usr/src/app/
     ports:
@@ -19,7 +19,7 @@ services:
     environment:
       - POSTGRES_USER=fintool_dev
       - POSTGRES_PASSWORD=fintool_dev
-      - POSTGRES_DB=fintool
+      - POSTGRES_DB=fintool_dev
 
 volumes:
   postgres_data:
