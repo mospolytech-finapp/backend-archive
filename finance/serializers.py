@@ -3,6 +3,10 @@ from .models import Transaction, Category
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+    )
+
     class Meta:
         model = Transaction
         fields = [
@@ -15,6 +19,14 @@ class TransactionSerializer(serializers.ModelSerializer):
             'description',
             'category',
         ]
+
+    def get_fields(self):
+        fields = super().get_fields()
+
+        fields['category'].queryset = fields['category'].queryset.filter(
+            owner=self.context['request'].user)
+
+        return fields
 
 
 class CategorySerializer(serializers.ModelSerializer):
