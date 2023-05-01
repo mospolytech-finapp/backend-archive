@@ -4,7 +4,24 @@
 
 > Linux, Unix
 
+### Продакшн
+
 ```
-docker build . -t finapp-backend
-docker run --name finapp-backend-app --rm -p 8000:8000 finapp-backend
+docker-compose -f docker-compose.prod.yml up -d --build
+docker-compose exec web python manage.py compilemessages
+docker-compose exec web python manage.py migrate --noinput
+```
+
+### Разработка
+
+```
+docker-compose up -d --build
+docker-compose exec web python manage.py compilemessages
+docker-compose exec web python manage.py migrate --noinput
+```
+
+## Просмотр бд
+
+```
+docker-compose exec db psql --username=fintool_dev --dbname=fintool
 ```
