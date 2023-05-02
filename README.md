@@ -7,9 +7,10 @@
 ### Продакшн
 
 ```
+sudo ./init-letsencrypt.sh
 docker-compose -f docker-compose.prod.yml up -d --build
-docker-compose exec web python manage.py compilemessages
-docker-compose exec web python manage.py migrate --noinput
+docker-compose -f docker-compose.prod.yml exec web python manage.py compilemessages
+docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
 ```
 
 ### Разработка
