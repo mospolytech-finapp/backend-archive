@@ -1,5 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 from .models import (
     Transaction,
@@ -20,10 +21,12 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
 
     def get_queryset(self):
-        return Transaction.objects.filter(owner=self.request.user)
+        return Transaction.objects.all()
 
     def filter_queryset(self, queryset):
         filter_params = self.request.query_params.dict()
+
+        queryset = queryset.filter(owner=self.request.user)
 
         amount_min = filter_params.pop('amount_min', None)
         if amount_min:
@@ -32,6 +35,26 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
         amount_max = filter_params.pop('amount_max', None)
         if amount_max:
             queryset = queryset.filter(amount__lte=amount_max)
+
+        date_min = filter_params.pop('date_min', None)
+        if date_min:
+            queryset = queryset.filter(date__gte=date_min)
+
+        date_max = filter_params.pop('date_max', None)
+        if date_max:
+            queryset = queryset.filter(date__lte=date_max)
+
+        category = filter_params.pop('category', None)
+        if category:
+            queryset = queryset.filter(category__id=category)
+
+        description = filter_params.pop('description', None)
+        if description:
+            queryset = queryset.filter(description__icontains=description)
+
+        name = filter_params.pop('name', None)
+        if description:
+            queryset = queryset.filter(name__icontains=name)
 
         queryset = queryset.filter(**filter_params)
 
@@ -45,6 +68,62 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
             serializer.data,
             status=status.HTTP_201_CREATED
         )
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='amount_min',
+                type=OpenApiTypes.NUMBER,
+                location=OpenApiParameter.QUERY,
+                description='Minimum transaction amount',
+                required=False
+            ),
+            OpenApiParameter(
+                name='amount_max',
+                type=OpenApiTypes.NUMBER,
+                location=OpenApiParameter.QUERY,
+                description='Maximum transaction amount',
+                required=False
+            ),
+            OpenApiParameter(
+                name='date_min',
+                type=OpenApiTypes.DATE,
+                location=OpenApiParameter.QUERY,
+                description='Earliest transaction date',
+                required=False
+            ),
+            OpenApiParameter(
+                name='date_max',
+                type=OpenApiTypes.DATE,
+                location=OpenApiParameter.QUERY,
+                description='Latest transaction date',
+                required=False
+            ),
+            OpenApiParameter(
+                name='category',
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                description='Filter by category ID',
+                required=False
+            ),
+            OpenApiParameter(
+                name='description',
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description='Filter by transaction description',
+                required=False
+            ),
+            OpenApiParameter(
+                name='name',
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description='Filter by transaction name',
+                required=False
+            ),
+        ],
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 # Категории
