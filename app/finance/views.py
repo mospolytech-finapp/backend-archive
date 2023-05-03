@@ -25,13 +25,13 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
     def filter_queryset(self, queryset):
         filter_params = self.request.query_params.dict()
 
-        if 'amount_min' in filter_params:
-            queryset = queryset.filter(amount__gte=filter_params['amount_min'])
-            del filter_params['amount_min']
+        amount_min = filter_params.pop('amount_min', None)
+        if amount_min:
+            queryset = queryset.filter(amount__gte=amount_min)
 
-        if 'amount_max' in filter_params:
-            queryset = queryset.filter(amount__lte=filter_params['amount_max'])
-            del filter_params['amount_max']
+        amount_max = filter_params.pop('amount_max', None)
+        if amount_max:
+            queryset = queryset.filter(amount__lte=amount_max)
 
         queryset = queryset.filter(**filter_params)
 
@@ -67,10 +67,9 @@ class CategoryManagerViewSet(viewsets.ModelViewSet):
 # Цели
 class GoalManagerViewSet(viewsets.ModelViewSet):
     serializer_class = GoalSerializer
-    queryset = Goal.objects.all()
 
     def get_queryset(self):
-        return self.queryset.filter(owner=self.request.user)
+        return Goal.objects.filter(owner=self.request.user)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data.copy())
@@ -85,12 +84,11 @@ class GoalManagerViewSet(viewsets.ModelViewSet):
 # Транзакции целей
 class GoalTransactionManagerViewSet(viewsets.ModelViewSet):
     serializer_class = GoalTransactionSerializer
-    queryset = Goal_Transaction.objects.all()
     lookup_field = 'id'
 
     def get_queryset(self):
         goal_id = self.kwargs['goal_id']
-        return self.queryset.filter(goal__id=goal_id, goal__owner=self.request.user)
+        return Goal_Transaction.objects.filter(goal__id=goal_id, goal__owner=self.request.user)
 
     def create(self, request, *args, **kwargs):
         goal_id = self.kwargs['goal_id']
