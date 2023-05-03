@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MinValueValidator
 import datetime
 
 
@@ -38,7 +39,7 @@ class Goal(models.Model):
     achievement_date = models.DateField(
         blank=False, null=False)
     amount_target = models.DecimalField(
-        max_digits=12, decimal_places=2, blank=False, null=False)
+        max_digits=12, decimal_places=2, blank=False, null=False, validators=[MinValueValidator(1)])
 
     def get_amount_now(self):
         return sum(goal_transaction.amount for goal_transaction in self.goal_transaction_set.all())

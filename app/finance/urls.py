@@ -17,19 +17,16 @@ urlpatterns = [
     path(
         'goals/<int:goal_id>/transactions/',
         GoalTransactionManagerViewSet.as_view({
-            # 'get': 'list',
+            'get': 'list',
             'post': 'create'
         }),
         name='goal_transaction'
     ),
-    # Менеджмент транзакций целей
-    #path(
-    #    'goals/<int:goal_id>/transactions/<int:id>/',
-    #    GoalTransactionManagerViewSet.as_view({
-    #        'get': 'retrieve',
-    #        'put': 'update',
-    #        'delete': 'destroy'
-    #    }),
-    #    name='goal_transaction-detail'
-    #),
+    path(
+        'goals/<int:goal_id>/transactions/<int:id>/',
+        GoalTransactionManagerViewSet.as_view({
+            'get': 'retrieve',
+        }),
+        name='goal_transaction-detail'
+    ),
 ]

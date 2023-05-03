@@ -1,6 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
+from django.utils.translation import gettext as _
+
+from decimal import Decimal
 
 from .models import (
     Transaction,
@@ -178,6 +181,20 @@ class GoalTransactionManagerViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(data=request.data.copy())
         serializer.is_valid(raise_exception=True)
+
+        if goal.get_amount_now() + Decimal(serializer.validated_data['amount']) < 0:
+            return Response(
+                {
+                    "type": "validation_error",
+                    "errors": [{
+                        "code": "invalid",
+                        "detail": _("The sum of all goal transactions cannot be less than zero."),
+                        "attr": "amount"
+                    }]
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         serializer.save(goal=goal)
         return Response(
             serializer.data,

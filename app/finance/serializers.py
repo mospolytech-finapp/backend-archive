@@ -57,7 +57,8 @@ class GoalTransactionSerializer(serializers.ModelSerializer):
 
 
 class GoalSerializer(serializers.ModelSerializer):
-    amount_now = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True, source='get_amount_now')
+    amount_now = serializers.DecimalField(
+        max_digits=10, decimal_places=2, read_only=True, source='get_amount_now')
 
     class Meta:
         model = Goal
