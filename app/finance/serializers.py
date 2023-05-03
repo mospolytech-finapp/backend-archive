@@ -51,6 +51,7 @@ class GoalTransactionSerializer(serializers.ModelSerializer):
             'goal',
             'amount',
             'date',
+            'time',
             'description',
         )
         read_only_fields = ('goal',)

@@ -52,5 +52,7 @@ class Goal_Transaction(models.Model):
         max_digits=12, decimal_places=2, blank=False, null=False)
     date = models.DateField(
         blank=False, null=False)
+    time = models.TimeField(
+        blank=False, null=False)
     description = models.CharField(
         max_length=128, blank=True, null=True)
