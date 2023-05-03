@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import Transaction, Category
+from .models import Transaction, Category, Goal, Goal_Transaction
 
 
+# Транзакции
 class FilteredCategoryPrimaryKeyRelatedField(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -20,8 +21,8 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = [
             'id',
-            'name',
             # 'owner',
+            'name',
             'amount',
             'date',
             'time',
@@ -30,6 +31,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         ]
 
 
+# Категории
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -38,3 +40,33 @@ class CategorySerializer(serializers.ModelSerializer):
             # 'owner',
             'name',
         ]
+
+
+# Цели
+class GoalTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal_Transaction
+        fields = (
+            'id',
+            'goal',
+            'amount',
+            'date',
+            'description',
+        )
+        read_only_fields = ('goal',)
+
+
+class GoalSerializer(serializers.ModelSerializer):
+    amount_now = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True, source='get_amount_now')
+
+    class Meta:
+        model = Goal
+        fields = (
+            'id',
+            # 'owner',
+            'name',
+            'opening_date',
+            'achievement_date',
+            'amount_target',
+            'amount_now',
+        )
