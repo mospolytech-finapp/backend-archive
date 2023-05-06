@@ -19,10 +19,6 @@ class FinappUserSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {'password': {'write_only': True}}
 
-    def validate_password(self, value):
-        validate_password(value)  # Django password validation
-        return value
-
-    def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        return user
+    def validate_password(self, password):
+        validate_password(password)  # Django password validation
+        return password

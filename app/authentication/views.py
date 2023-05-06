@@ -6,18 +6,17 @@ from .serializers import FinappUserSerializer
 
 
 class RegistrationView(generics.CreateAPIView):
-    permission_classes = [AllowAny]
     serializer_class = FinappUserSerializer
+    permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            self.perform_create(serializer)
-            return Response(
-                serializer.data,
-                status=status.HTTP_201_CREATED
-            )
+        data = request.data.copy()
+        if 'email' in data:
+            data['email'] = data['email'].lower()
+        serializer = FinappUserSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(
-            serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
+            serializer.data,
+            status=status.HTTP_201_CREATED
         )
