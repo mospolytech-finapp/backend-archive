@@ -56,7 +56,7 @@ class TransactionManagerViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(description__icontains=description)
 
         name = filter_params.pop('name', None)
-        if description:
+        if name:
             queryset = queryset.filter(name__icontains=name)
 
         queryset = queryset.filter(**filter_params)
