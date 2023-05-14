@@ -22,3 +22,7 @@ class FinappUserSerializer(serializers.ModelSerializer):
     def validate_password(self, password):
         validate_password(password)  # Django password validation
         return password
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
