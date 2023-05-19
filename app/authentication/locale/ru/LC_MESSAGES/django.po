@@ -45,3 +45,7 @@ msgstr "В пароле отсутствуют специальные симво
 #: authentication/validator/password.py:53
 msgid "Your password must contain special symbols."
 msgstr "Ваш пароль должен содержать специальные символы."
+
+#: authentication/serializers.py:31
+msgid "Birth date cannot be in the future."
+msgstr "Дата рождения не может быть в будущем."
